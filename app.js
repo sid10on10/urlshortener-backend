@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var registerRouter = require('./routes/registration');
 var loginRouter = require('./routes/login');
+var bodyParser = require("body-parser")
 
 var app = express();
 
@@ -16,6 +17,9 @@ var app = express();
 app.use(cors({
   origin:"http://127.0.0.1:5500",
 }))
+
+// body parser
+app.use(bodyParser.json())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

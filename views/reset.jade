@@ -1,1 +1,34 @@
-include reset.html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title Reset
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')
+    style.
+      .outerbox{
+      display: flex;
+      justify-content: center;
+      height:50%;
+      }
+      .innerbox{
+      width:80%;
+      height:100%;
+      }
+  body
+    .outerbox
+      .container.innerbox
+        h1(style='font-family: monospace;text-align: center;') Reset Page
+        form(onsubmit='reset();return false')
+          .form-group
+            label(for='password1') New Password
+            input#password1.form-control(type='password', placeholder='Enter Password')
+          .form-group
+            label(for='password2') Confirm Password
+            input#password2.form-control(type='password', placeholder='Password')
+          button.btn.btn-primary(type='submit') Change
+    script.
+      function reset(event){
+      event.preventDefault()
+      let password = document.getElementById("password1").innerText
+      console.log(password)
+      }
