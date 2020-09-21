@@ -19,16 +19,22 @@ router.post('/', async function(req, res, next) {
         let user = await db.collection("users").findOne({email:req.body.email})
         console.log(user)
         if(user){
-            let result  = await bcryptjs.compare(req.body.password,user.password)
-            if(result){
-                let token = jwt.sign({id:user._id},"abcdefghijklmnopqrs")
-                res.json({
-                    message:"Login Successfull",
-                    token
-                })
+            if(user.activated){
+                let result  = await bcryptjs.compare(req.body.password,user.password)
+                if(result){
+                    let token = jwt.sign({id:user._id},"abcdefghijklmnopqrs")
+                    res.json({
+                        message:"Login Successfull",
+                        token
+                    })
+                }else{
+                    res.json({
+                        message:"Password Incorrect"
+                    })
+                }
             }else{
                 res.json({
-                    message:"Password Incorrect"
+                    message:"Account not activated.Please activate your account"
                 })
             }
         }else{

@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var mongodb = require("mongodb")
 var {url,mongodClient} = require("../config")
-const {sendMail} = require('../common/mailer');
+const { sendEmail } = require('../common/mailer');
+const bcryptjs = require("bcryptjs");
 
 
 
@@ -18,12 +19,14 @@ router.post('/forgot_password', async function(req, res, next) {
     let db = client.db("shortener")
     let user = await db.collection("users").findOne({email:req.body.email})
     let userId = user._id
+    let email = req.body.email
     if(user){
       let reset_string = Math.random().toString(36).substr(2, 5);
       await db.collection("users").findOneAndUpdate({email:req.body.email},{$set:{reset_token:reset_string}})
       let reset_url  = `http://localhost:3000/reset/${userId}/${reset_string}`
-      let mail = sendMail(email, 'Password Reset', reset_url);
-      if(!mail) throw "mail not send";
+      let mail_data = `Click here to reset your password ${reset_url}`
+      let mail = await sendEmail(email, 'Password Reset Link', mail_data);
+      console.log(mail)
       res.json({
         message:"Email Sent"
       })
@@ -79,7 +82,8 @@ router.get('/activate/:activationKey', async function(req, res, next) {
     let db = client.db("shortener")
     let user = await db.collection("users").findOne({activationKey:req.params.activationKey})
     if(user){
-      await db.collection("users").findOneAndUpdate({activationKey:req.params.activationKey},{$set:{activated:true,activationKey:""}})
+      await db.collection("users").findOneAndUpdate({activationKey:req.params.activationKey},{$set:{activated:true}})
+      await db.collection("users").updateOne({activationKey:req.params.activationKey},{$unset:{activationKey:1}})
       res.json({
         message:"Successfully Activated You can login"
       })
@@ -96,6 +100,28 @@ router.get('/activate/:activationKey', async function(req, res, next) {
   }
 });
 
+router.post('/reset_password', async function(req, res, next) {
+  let client;
+  try{
+    client = await mongodClient.connect(url)
+    let db = client.db("shortener")
+    let {email,password} = req.body
+    let user = await db.collection("users").findOne({email:email})
+    let salt = await bcryptjs.genSalt(10)
+    let hash = await bcryptjs.hash(password,salt)
+    password = hash
+    let setpass = await db.collection("users").updateOne({email},{$set:{password}})
+    let remove_token = await db.collection("users").updateOne({email},{$unset:{reset_token:1}})
+    console.log(setpass)
+    console.log(remove_token)
+    res.json({
+      message:"Password reset complete"
+    })
+  }catch(error){
+    client.close()
+    console.log(error)
+  }
+});
 
 
 

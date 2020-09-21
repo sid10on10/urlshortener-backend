@@ -18,7 +18,8 @@ html(lang='en')
     .outerbox
       .container.innerbox
         h1(style='font-family: monospace;text-align: center;') Reset Page
-        form(onsubmit='reset();return false')
+        h3#email #{email}
+        form(onsubmit='reset_pass();return false')
           .form-group
             label(for='password1') New Password
             input#password1.form-control(type='password', placeholder='Enter Password')
@@ -27,8 +28,22 @@ html(lang='en')
             input#password2.form-control(type='password', placeholder='Password')
           button.btn.btn-primary(type='submit') Change
     script.
-      function reset(event){
-      event.preventDefault()
-      let password = document.getElementById("password1").innerText
-      console.log(password)
+      async function reset_pass(){
+      let email = document.getElementById("email").innerHTML
+      let password1 = document.getElementById("password1").value
+      let password2 = document.getElementById("password2").value
+      if(password1!=password2){
+      alert("Passwords don't match")
+      }else{
+      let data = {email,password:password1}
+      let resetData = await fetch("http://localhost:3000/reset_password",{
+      method:"POST",
+      body:JSON.stringify(data),
+      headers: {
+      'Content-Type': 'application/json'
+      }
+      })
+      let resetRes = await resetData.json()
+      alert(resetRes.message)
+      }
       }
