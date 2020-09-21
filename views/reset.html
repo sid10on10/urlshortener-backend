@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .outerbox{
+            display: flex;
+            justify-content: center;
+            height:50%;
+        }
+        .innerbox{
+            width:80%;
+            height:100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="outerbox">
+        <div class="container innerbox">
+            <h1 style="font-family: monospace;text-align: center;">Reset Page</h1>
+            <form onsubmit="reset();return false">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter Email">
+                  </div>
+                <div class="form-group">
+                  <label for="password1">New Password</label>
+                  <input type="password" class="form-control" id="password1" placeholder="Enter Password">
+                </div>
+                <div class="form-group">
+                  <label for="password2">Confirm Password</label>
+                  <input type="password" class="form-control" id="password2" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Change</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function reset(){
+            let email = document.getElementById("email").value
+            console.log(email)
+        }
+    </script>
+</body>
+</html>

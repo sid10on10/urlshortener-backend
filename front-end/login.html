@@ -1,0 +1,64 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .outerbox{
+            display: flex;
+            justify-content: center;
+            height:50%;
+        }
+        .innerbox{
+            width:80%;
+            height:100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="outerbox">
+        <div class="container innerbox">
+            <h1 style="font-family: monospace;text-align: center;">Login Page</h1>
+            <form onsubmit="login();return false">
+                <div class="form-group">
+                  <label for="email">Email address</label>
+                  <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" placeholder="Password">
+                  <small><a href="forgot_password.html">Forgot Password</a></small>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <a href="register.html">Go to Register Page</a>
+            </form>
+        </div>
+    </div>
+    <script>
+        async function login(){
+            let data = {
+                email:document.getElementById("email").value,
+                password:document.getElementById("password").value
+            }
+            let loginData = await fetch("http://localhost:3000/login",{
+                method:"POST",
+                body:JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            let loginRes = await loginData.json()
+            if(loginRes.token){
+                localStorage.setItem("token",loginRes.token)
+                alert(loginRes.message+" Token Generated")
+            }else{
+                alert(loginRes.message)
+            }
+
+            
+
+        }
+    </script>
+</body>
+</html>
