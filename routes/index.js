@@ -4,13 +4,43 @@ var mongodb = require("mongodb")
 var {url,mongodClient} = require("../config")
 const { sendEmail } = require('../common/mailer');
 const bcryptjs = require("bcryptjs");
-
+const jwt = require("jsonwebtoken")
+const {authenticate} = require('../common/auth');
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
+
+router.post('/shorturl',authenticate, async function(req, res, next) {
+  let client;
+  try{
+      client = await mongodClient.connect(url)
+      let db = client.db("shortener")
+      let token = req.headers.authorization
+      let user = jwt.verify(token,"abcdefghijklmnopqrs")
+      let userID = user.id
+      //console.log(user)
+      //console.log(token)
+      let short = Math.random().toString(20).substr(2, 6);
+      let shortURL = `http://localhost:3000/short/${short}`
+      let longURL = req.body.url
+      await db.collection("urls").insertOne({
+          short,shortURL,longURL,count:0,
+      })
+      await db.collection("users").findOneAndUpdate({_id:mongodb.ObjectId(userID)},{$push:{urls:short}})
+      res.json({
+          message:"Short url Created",
+          shorturl:shortURL
+      })
+  }catch(error){
+      client.close()
+      console.log(error)
+  }
+});
+
+module.exports = router;
 
 router.post('/forgot_password', async function(req, res, next) {
   let client;

@@ -6,6 +6,7 @@ var logger = require('morgan');
 const cors = require("cors")
 
 var indexRouter = require('./routes/index');
+var shortRouter = require('./routes/short');
 var usersRouter = require('./routes/users');
 var registerRouter = require('./routes/registration');
 var loginRouter = require('./routes/login');
@@ -33,6 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/short', shortRouter);
 app.use('/users', usersRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
