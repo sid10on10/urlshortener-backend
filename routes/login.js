@@ -12,7 +12,7 @@ router.post('/', async function(req, res, next) {
         let db = client.db("shortener")
         
         let user = await db.collection("users").findOne({email:req.body.email})
-        console.log(user)
+        //console.log(user)
         if(user){
             if(user.activated){
                 let result  = await bcryptjs.compare(req.body.password,user.password)
@@ -22,6 +22,7 @@ router.post('/', async function(req, res, next) {
                         message:"Login Successfull",
                         token
                     })
+                    res.render("dashboard",{email:req.body.email})
                 }else{
                     res.json({
                         message:"Password Incorrect"
