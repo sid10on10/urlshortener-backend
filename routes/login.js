@@ -4,11 +4,6 @@ var {url,mongodClient} = require("../config")
 const bcryptjs = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.write("<h1>Login page! Use POST method to Login Users</h1>");
-  res.end()
-});
 
 router.post('/', async function(req, res, next) {
     let client;

@@ -9,9 +9,7 @@ if(req.headers.authorization){
             })
         }
         next();
-    
     })
-    
 
 }
 else{

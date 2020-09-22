@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var registerRouter = require('./routes/registration');
 var loginRouter = require('./routes/login');
+var dashboardRouter = require('./routes/dashboard');
 var bodyParser = require("body-parser")
 
 var app = express();
@@ -35,6 +36,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
+app.use('/dashboard', dashboardRouter);
 
 
 
