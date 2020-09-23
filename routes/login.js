@@ -22,7 +22,6 @@ router.post('/', async function(req, res, next) {
                         message:"Login Successfull",
                         token
                     })
-                    res.render("dashboard",{email:req.body.email})
                 }else{
                     res.json({
                         message:"Password Incorrect"

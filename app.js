@@ -15,9 +15,11 @@ var bodyParser = require("body-parser")
 
 var app = express();
 
+require('dotenv').config()
+
 //cors
 app.use(cors({
-  origin:"http://127.0.0.1:5500",
+  origin:"*"
 }))
 
 // body parser

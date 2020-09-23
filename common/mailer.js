@@ -5,8 +5,8 @@ try{
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'sid10on10@gmail.com',
-      pass: '#'
+      user: process.env.MailUser,
+      pass: process.env.MailPass
     }
   });
   

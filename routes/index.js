@@ -48,9 +48,9 @@ router.post('/forgot_password', async function(req, res, next) {
     client = await mongodClient.connect(url)
     let db = client.db("shortener")
     let user = await db.collection("users").findOne({email:req.body.email})
-    let userId = user._id
-    let email = req.body.email
     if(user){
+      let userId = user._id
+      let email = req.body.email
       let reset_string = Math.random().toString(36).substr(2, 5);
       await db.collection("users").findOneAndUpdate({email:req.body.email},{$set:{reset_token:reset_string}})
       let reset_url  = `http://localhost:3000/reset/${userId}/${reset_string}`
@@ -142,8 +142,6 @@ router.post('/reset_password', async function(req, res, next) {
     password = hash
     let setpass = await db.collection("users").updateOne({email},{$set:{password}})
     let remove_token = await db.collection("users").updateOne({email},{$unset:{reset_token:1}})
-    console.log(setpass)
-    console.log(remove_token)
     res.json({
       message:"Password reset complete"
     })
