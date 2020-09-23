@@ -24,7 +24,7 @@ router.post('/shorturl',authenticate, async function(req, res, next) {
       //console.log(user)
       //console.log(token)
       let short = Math.random().toString(20).substr(2, 6);
-      let shortURL = `http://localhost:3000/short/${short}`
+      let shortURL = `https://urlshortener-zen.herokuapp.com/short/${short}`
       let longURL = req.body.url
       await db.collection("urls").insertOne({
           short,shortURL,longURL,count:0,
@@ -53,7 +53,7 @@ router.post('/forgot_password', async function(req, res, next) {
       let email = req.body.email
       let reset_string = Math.random().toString(36).substr(2, 5);
       await db.collection("users").findOneAndUpdate({email:req.body.email},{$set:{reset_token:reset_string}})
-      let reset_url  = `http://localhost:3000/reset/${userId}/${reset_string}`
+      let reset_url  = `https://urlshortener-zen.herokuapp.com/reset/${userId}/${reset_string}`
       let mail_data = `Click here to reset your password ${reset_url}`
       let mail = await sendEmail(email, 'Password Reset Link', mail_data);
       console.log(mail)

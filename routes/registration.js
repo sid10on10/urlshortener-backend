@@ -33,7 +33,7 @@ router.post('/', async function(req, res, next) {
         activated,
         activationKey
       })
-      let activation_url = `http://localhost:3000/activate/${activationKey}`
+      let activation_url = `https://urlshortener-zen.herokuapp.com/activate/${activationKey}`
       let email_data = `This is the link for activating your account ${activation_url}`
       await sendEmail(email,"Account Activation",email_data)
       res.json({

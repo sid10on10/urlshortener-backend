@@ -39,7 +39,7 @@ html(lang='en')
       alert("Passwords don't match")
       }else{
       let data = {email,password:password1}
-      let resetData = await fetch("http://localhost:3000/reset_password",{
+      let resetData = await fetch("https://urlshortener-zen.herokuapp.com/reset_password",{
       method:"POST",
       body:JSON.stringify(data),
       headers: {
