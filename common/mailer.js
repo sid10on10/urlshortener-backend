@@ -30,6 +30,4 @@ var transporter = nodemailer.createTransport({
 }
 
 
-//sendEmail("siddhantk.singh.phe14@itbhu.ac.in","Lol","This is dummy text")
-
 module.exports = {sendEmail}
